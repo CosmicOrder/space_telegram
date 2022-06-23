@@ -1,13 +1,17 @@
+import os.path
+from pathlib import Path
+
 import requests
 
 
-def download_image(url):
+def download_image(url, folder='images/'):
+    Path(folder).mkdir(exist_ok=True)
     response = requests.get(url)
     response.raise_for_status()
 
     filename = 'hubble.jpeg'
 
-    with open(filename, 'wb') as file:
+    with open(os.path.join(folder, filename), 'wb') as file:
         file.write(response.content)
 
 
