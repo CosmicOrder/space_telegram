@@ -9,12 +9,10 @@ def download_image(url, folder='images/'):
     response = requests.get(url)
     response.raise_for_status()
 
-    filename = 'hubble.jpeg'
-
-    with open(os.path.join(folder, filename), 'wb') as file:
-        file.write(response.content)
+    return print(response.json()['links']['flickr_images'])
 
 
 if __name__ == '__main__':
-    url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
-    download_image(url)
+    endpoint_url = 'https://api.spacexdata.com/v3/launches/16'
+
+    download_image(endpoint_url)
