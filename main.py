@@ -9,7 +9,17 @@ def download_image(url, folder='images/'):
     response = requests.get(url)
     response.raise_for_status()
 
-    return print(response.json()['links']['flickr_images'])
+    image_links = response.json()['links']['flickr_images']
+
+    for index, image_link in enumerate(image_links, 1):
+        response = requests.get(image_link)
+        response.raise_for_status()
+
+        filename = f'spacex{index}.jpg'
+        path = os.path.join(folder, filename)
+
+        with open(path, 'wb') as file:
+            file.write(response.content)
 
 
 if __name__ == '__main__':
