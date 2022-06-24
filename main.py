@@ -4,7 +4,7 @@ from pathlib import Path
 import requests
 
 
-def download_image(url, folder='images/'):
+def fetch_spacex_last_launch(url, folder='images/'):
     Path(folder).mkdir(exist_ok=True)
     response = requests.get(url)
     response.raise_for_status()
@@ -25,4 +25,4 @@ def download_image(url, folder='images/'):
 if __name__ == '__main__':
     endpoint_url = 'https://api.spacexdata.com/v3/launches/16'
 
-    download_image(endpoint_url)
+    fetch_spacex_last_launch(endpoint_url)
