@@ -8,7 +8,7 @@ load_dotenv()
 TOKEN = os.getenv('BOT_API_TOKEN')
 
 bot = telegram.Bot(token=TOKEN)
-bot.send_message(
+bot.send_photo(
     chat_id='@nasa0photos',
-    text='Привет, подписчики!',
+    photo=open('images/spacex1.jpg', 'rb'),
 )
