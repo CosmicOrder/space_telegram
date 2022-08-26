@@ -19,7 +19,7 @@ def create_parser():
 
 def fetch_epic_images(url, epic_picture_url, quantity, folder='epic_images'):
     Path(folder).mkdir(exist_ok=True)
-    api_key = os.getenv('API_KEY')
+    api_key = os.getenv('NASA_API_KEY')
 
     payload = {
         'api_key': api_key,

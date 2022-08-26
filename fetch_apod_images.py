@@ -28,7 +28,7 @@ def parse_ext(url):
 
 def fetch_apod_images(url, start_date, end_date, folder='apod_images'):
     Path(folder).mkdir(exist_ok=True)
-    api_key = os.getenv('API_KEY')
+    api_key = os.getenv('NASA_API_KEY')
 
     payload = {
         'start_date': start_date,
