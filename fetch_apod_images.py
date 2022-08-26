@@ -11,11 +11,11 @@ def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--start_date',
-        default='2022-04-20',
+        default='2022-01-01',
     )
     parser.add_argument(
         '--end_date',
-        default='2022-05-25',
+        default='2022-01-05',
     )
     return parser
 
