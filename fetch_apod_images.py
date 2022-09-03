@@ -12,10 +12,12 @@ def create_parser():
     parser.add_argument(
         '--start_date',
         default='2022-01-01',
+        help='The start of the date range (default: 2022-01-01)',
     )
     parser.add_argument(
         '--end_date',
         default='2022-01-05',
+        help='The end of the date range (default: 2022-01-05)',
     )
     return parser
 
@@ -30,7 +32,7 @@ def fetch_apod_images(start_date, end_date, folder='apod_images'):
     apod_endpoint = 'https://api.nasa.gov/planetary/apod'
 
     Path(folder).mkdir(exist_ok=True)
-    api_key = os.getenv('NASA_API_KEY')
+    api_key = os.environ['NASA_API_KEY']
 
     payload = {
         'start_date': start_date,
@@ -69,4 +71,7 @@ if __name__ == '__main__':
     start_date = args.start_date
     end_date = args.end_date
 
-    fetch_apod_images(start_date, end_date)
+    try:
+        fetch_apod_images(start_date, end_date)
+    except KeyError:
+        print('Укажите NASA_API_KEY в .env')

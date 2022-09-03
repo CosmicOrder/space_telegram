@@ -48,7 +48,10 @@ if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
 
-    TOKEN = os.getenv('BOT_API_TOKEN')
+    try:
+        TOKEN = os.environ['BOT_API_TOKEN']
+    except KeyError:
+        print('Укажите BOT_API_TOKEN в .env')
     sent_all = False
     while True:
         try:
