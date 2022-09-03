@@ -16,7 +16,7 @@ def create_parser():
     return parser
 
 
-def fetch_spacex_last_launch(url, folder='images/'):
+def fetch_spacex_last_launch(url, folder='images'):
     Path(folder).mkdir(exist_ok=True)
     spacex_response = requests.get(url)
     spacex_response.raise_for_status()
