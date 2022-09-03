@@ -14,7 +14,7 @@ def create_parser():
     parser.add_argument(
         '--frequency',
         default=4,
-        help='frequency publications in hours',
+        help='frequency publications in hours (default: 4 hours)',
         type=int,
     )
     return parser
@@ -35,7 +35,6 @@ def parse_photos(sent=False, folder='.'):
 
 
 def send_photos_to_group(media):
-    bot = telegram.Bot(token=TG_BOT_TOKEN)
     bot.send_media_group(
         chat_id=chat_id,
         media=media,
@@ -47,25 +46,28 @@ if __name__ == '__main__':
     load_dotenv()
     parser = create_parser()
     args = parser.parse_args()
+    bot = None
 
     try:
         TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
+        bot = telegram.Bot(token=TG_BOT_TOKEN)
     except KeyError:
         print('Укажите TG_BOT_TOKEN в .env')
 
     chat_id = os.getenv('TG_CHAT_ID', '@nasa0photos')
 
     sent_all = False
-    while True:
-        try:
-            if sent_all:
-                parsed_photos = parse_photos(sent_all)
-            else:
-                parsed_photos = parse_photos()
-            for some_parsed_photo in parsed_photos:
-                send_photos_to_group(some_parsed_photo)
-            sent_all = True
-            time.sleep(args.frequency*3600)
-        except telegram.error.NetworkError:
-            print('Соединение с Интернетом не установлено')
-            time.sleep(5)
+    if bot:
+        while True:
+            try:
+                if sent_all:
+                    parsed_photos = parse_photos(sent_all)
+                else:
+                    parsed_photos = parse_photos()
+                for some_parsed_photo in parsed_photos:
+                    send_photos_to_group(some_parsed_photo)
+                sent_all = True
+                time.sleep(args.frequency*3600)
+            except telegram.error.NetworkError:
+                print('Соединение с Интернетом не установлено')
+                time.sleep(5)
