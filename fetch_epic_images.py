@@ -22,7 +22,6 @@ def fetch_epic_images(quantity, folder='epic_images'):
     epic_picture_url = 'https://api.nasa.gov/EPIC/archive/natural/'
 
     Path(folder).mkdir(exist_ok=True)
-    api_key = os.environ['NASA_API_KEY']
 
     payload = {
         'api_key': api_key,
@@ -54,6 +53,8 @@ if __name__ == '__main__':
     quantity = args.number_of_photos
 
     try:
-        fetch_epic_images(quantity)
+        api_key = os.environ['NASA_API_KEY']
     except KeyError:
         print('Укажите NASA_API_KEY в .env')
+
+    fetch_epic_images(quantity)

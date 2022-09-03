@@ -32,7 +32,6 @@ def fetch_apod_images(start_date, end_date, folder='apod_images'):
     apod_endpoint = 'https://api.nasa.gov/planetary/apod'
 
     Path(folder).mkdir(exist_ok=True)
-    api_key = os.environ['NASA_API_KEY']
 
     payload = {
         'start_date': start_date,
@@ -72,6 +71,8 @@ if __name__ == '__main__':
     end_date = args.end_date
 
     try:
-        fetch_apod_images(start_date, end_date)
+        api_key = os.environ['NASA_API_KEY']
     except KeyError:
         print('Укажите NASA_API_KEY в .env')
+
+    fetch_apod_images(start_date, end_date)
