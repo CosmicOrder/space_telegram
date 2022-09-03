@@ -10,7 +10,7 @@ def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--photo',
-        default='afad',
+        default='nasa_apod_1',
         type=str,
     )
     return parser
@@ -34,13 +34,13 @@ def send_photo_to_group(photo=None, path=None):
     bot = telegram.Bot(token=TOKEN)
     if path:
         bot.send_photo(
-            chat_id='@nasa0photos',
+            chat_id=chat_id,
             photo=open(path, 'rb'),
             timeout=100,
         )
     else:
         bot.send_photo(
-            chat_id='@nasa0photos',
+            chat_id=chat_id,
             photo=photo,
             timeout=100,
         )
@@ -51,7 +51,12 @@ if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
 
-    TOKEN = os.getenv('BOT_API_TOKEN')
+    try:
+        TOKEN = os.environ['BOT_API_TOKEN']
+    except KeyError:
+        print('Укажите BOT_API_TOKEN в .env')
+
+    chat_id = os.getenv('CHAT_ID', '@nasa0photos')
 
     if args.photo:
         image_path = parse_photos(image_name=args.photo)
