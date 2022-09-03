@@ -17,14 +17,17 @@ def create_parser():
     return parser
 
 
-def fetch_epic_images(url, epic_picture_url, quantity, folder='epic_images'):
+def fetch_epic_images(quantity, folder='epic_images'):
+    epic_endpoint = 'https://api.nasa.gov/EPIC/api/natural'
+    epic_picture_url = 'https://api.nasa.gov/EPIC/archive/natural/'
+
     Path(folder).mkdir(exist_ok=True)
     api_key = os.getenv('NASA_API_KEY')
 
     payload = {
         'api_key': api_key,
     }
-    epics = requests.get(url, params=payload)
+    epics = requests.get(epic_endpoint, params=payload)
     epics.raise_for_status()
 
     epics = epics.json()[:quantity]
@@ -50,7 +53,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     quantity = args.number_of_photos
 
-    epic_endpoint = 'https://api.nasa.gov/EPIC/api/natural'
-    epic_picture_url = 'https://api.nasa.gov/EPIC/archive/natural/'
-
-    fetch_epic_images(epic_endpoint, epic_picture_url, quantity)
+    fetch_epic_images(quantity)

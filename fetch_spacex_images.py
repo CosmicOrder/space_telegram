@@ -16,9 +16,11 @@ def create_parser():
     return parser
 
 
-def fetch_spacex_last_launch(url, folder='images'):
+def fetch_spacex_last_launch(launch_id, folder='images'):
+    spacex_endpoint = f'https://api.spacexdata.com/v3/launches/{launch_id}'
+
     Path(folder).mkdir(exist_ok=True)
-    spacex_response = requests.get(url)
+    spacex_response = requests.get(spacex_endpoint)
     spacex_response.raise_for_status()
 
     launch_image_links = spacex_response.json()['links']['flickr_images']
@@ -39,6 +41,4 @@ if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
 
-    spacex_endpoint = f'https://api.spacexdata.com/v3/launches/{args.launch_id}'
-
-    fetch_spacex_last_launch(spacex_endpoint)
+    fetch_spacex_last_launch(args.launch_id)

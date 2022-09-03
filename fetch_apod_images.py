@@ -26,7 +26,9 @@ def parse_ext(url):
     return ext
 
 
-def fetch_apod_images(url, start_date, end_date, folder='apod_images'):
+def fetch_apod_images(start_date, end_date, folder='apod_images'):
+    apod_endpoint = 'https://api.nasa.gov/planetary/apod'
+
     Path(folder).mkdir(exist_ok=True)
     api_key = os.getenv('NASA_API_KEY')
 
@@ -36,7 +38,7 @@ def fetch_apod_images(url, start_date, end_date, folder='apod_images'):
         'api_key': api_key,
     }
 
-    apods = requests.get(url, params=payload)
+    apods = requests.get(apod_endpoint, params=payload)
     apods.raise_for_status()
 
     for index, apod in enumerate(apods.json(), 1):
@@ -64,8 +66,7 @@ if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
 
-    apod_endpoint = 'https://api.nasa.gov/planetary/apod'
     start_date = args.start_date
     end_date = args.end_date
 
-    fetch_apod_images(apod_endpoint, start_date, end_date)
+    fetch_apod_images(start_date, end_date)
