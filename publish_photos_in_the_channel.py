@@ -51,11 +51,15 @@ if __name__ == '__main__':
     TOKEN = os.getenv('BOT_API_TOKEN')
     sent_all = False
     while True:
-        if sent_all:
-            parsed_photos = parse_photos(sent_all)
-        else:
-            parsed_photos = parse_photos()
-        for some_parsed_photo in parsed_photos:
-            send_photos_to_group(some_parsed_photo)
-        sent_all = True
-        time.sleep(args.frequency*3600)
+        try:
+            if sent_all:
+                parsed_photos = parse_photos(sent_all)
+            else:
+                parsed_photos = parse_photos()
+            for some_parsed_photo in parsed_photos:
+                send_photos_to_group(some_parsed_photo)
+            sent_all = True
+            time.sleep(args.frequency*3600)
+        except telegram.error.NetworkError:
+            print('Соединение с Интернетом не установлено')
+            time.sleep(5)
