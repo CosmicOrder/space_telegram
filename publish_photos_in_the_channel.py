@@ -35,7 +35,7 @@ def parse_photos(sent=False, folder='.'):
 
 
 def send_photos_to_group(media):
-    bot = telegram.Bot(token=TOKEN)
+    bot = telegram.Bot(token=TG_BOT_TOKEN)
     bot.send_media_group(
         chat_id=chat_id,
         media=media,
@@ -49,11 +49,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        TOKEN = os.environ['BOT_API_TOKEN']
+        TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
     except KeyError:
-        print('Укажите BOT_API_TOKEN в .env')
+        print('Укажите TG_BOT_TOKEN в .env')
 
-    chat_id = os.getenv('CHAT_ID', '@nasa0photos')
+    chat_id = os.getenv('TG_CHAT_ID', '@nasa0photos')
 
     sent_all = False
     while True:
