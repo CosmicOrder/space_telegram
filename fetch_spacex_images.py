@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--id',
+        '--launch_id',
         default='next',
-        help='flight_number',
+        help='launch number (default: latest launch)',
     )
     return parser
 
@@ -39,6 +39,6 @@ if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
 
-    spacex_endpoint = f'https://api.spacexdata.com/v3/launches/{args.id}'
+    spacex_endpoint = f'https://api.spacexdata.com/v3/launches/{args.launch_id}'
 
     fetch_spacex_last_launch(spacex_endpoint)
