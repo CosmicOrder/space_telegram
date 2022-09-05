@@ -6,12 +6,15 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+from funcs import fetch_and_save_photos
+
 
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--number_of_photos',
         default=5,
+        help='number of photos (default: 5)',
         type=int,
     )
     return parser
@@ -36,14 +39,14 @@ def fetch_epic_images(quantity, folder='epic_images'):
         date = datetime.fromisoformat(epic['date']).strftime("%Y/%m/%d")
         epic_url = f'{epic_picture_url}{date}/png/{image}.png'
 
-        epic_response = requests.get(epic_url, params=payload)
-        epic_response.raise_for_status()
-
-        filename = f'epic{index}.png'
-        path = os.path.join(folder, filename)
-
-        with open(path, 'wb') as file:
-            file.write(epic_response.content)
+        fetch_and_save_photos(
+            epic_url,
+            api_name='epic',
+            index=index,
+            folder=folder,
+            img_url=epic_url,
+            payload=payload,
+        )
 
 
 if __name__ == '__main__':

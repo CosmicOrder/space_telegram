@@ -1,9 +1,10 @@
 import argparse
-import os.path
 from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
+
+from funcs import fetch_and_save_photos
 
 
 def create_parser():
@@ -26,14 +27,13 @@ def fetch_spacex_last_launch(launch_id, folder='images'):
     launch_image_links = spacex_response.json()['links']['flickr_images']
 
     for index, launch_image_link in enumerate(launch_image_links, 1):
-        launch_image_response = requests.get(launch_image_link)
-        launch_image_response.raise_for_status()
-
-        filename = f'spacex{index}.jpg'
-        path = os.path.join(folder, filename)
-
-        with open(path, 'wb') as file:
-            file.write(launch_image_response.content)
+        fetch_and_save_photos(
+            launch_image_link,
+            api_name='spacex',
+            index=index,
+            folder=folder,
+            img_url=launch_image_links,
+        )
 
 
 if __name__ == '__main__':
