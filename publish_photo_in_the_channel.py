@@ -22,7 +22,9 @@ def parse_photos(image_name=None, folder='.'):
         for filename in files:
             if filename.endswith(('.jpg', '.png')) and not image_name:
                 image_path = os.path.join(root, filename)
-                images.append(open(image_path, 'rb'))
+                with open(image_path, 'rb') as image:
+                    image = image.read()
+                images.append(image)
             elif image_name:
                 if filename.endswith(('.jpg', '.png')) \
                         and filename.startswith(image_name):
@@ -30,17 +32,20 @@ def parse_photos(image_name=None, folder='.'):
     return images
 
 
-def send_photo_to_group(photo=None, path=None):
+def send_photo_to_group(image=None, path=None):
     if path:
+        with open(path, 'rb') as image:
+            image = image.read()
+
         bot.send_photo(
             chat_id=chat_id,
-            photo=open(path, 'rb'),
+            photo=image,
             timeout=100,
         )
     else:
         bot.send_photo(
             chat_id=chat_id,
-            photo=photo,
+            photo=image,
             timeout=100,
         )
 
@@ -68,4 +73,4 @@ if __name__ == '__main__':
                 print('Фото с таким именем не существует')
         else:
             parsed_photo = random.choice(parse_photos())
-            send_photo_to_group(photo=parsed_photo)
+            send_photo_to_group(image=parsed_photo)

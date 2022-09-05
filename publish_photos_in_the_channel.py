@@ -26,7 +26,9 @@ def parse_photos(sent=False, folder='.'):
         for filename in files:
             if filename.endswith(('.jpg', '.png')):
                 image_path = os.path.join(root, filename)
-                images.append(InputMediaPhoto(media=open(image_path, 'rb')))
+                with open(image_path, 'rb') as image:
+                    image = image.read()
+                images.append(InputMediaPhoto(media=image))
     if sent:
         random.shuffle(images)
     images = list(chunked(images, 10))
