@@ -24,12 +24,6 @@ def create_parser():
     return parser
 
 
-def parse_ext(url):
-    path = urlsplit(url).path
-    root, ext = os.path.splitext(path)
-    return ext
-
-
 def fetch_apod_images(start_date, end_date, folder='apod_images'):
     apod_endpoint = 'https://api.nasa.gov/planetary/apod'
 
