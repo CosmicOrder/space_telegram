@@ -1,6 +1,7 @@
 import argparse
 import os
 import random
+from pathlib import Path
 
 import telegram
 from dotenv import load_dotenv
@@ -21,14 +22,14 @@ def parse_photos(image_name=None, folder='.'):
     for root, dirs, files in os.walk(folder):
         for filename in files:
             if filename.endswith(('.jpg', '.png')) and not image_name:
-                image_path = os.path.join(root, filename)
+                image_path = Path(root, filename)
                 with open(image_path, 'rb') as image:
                     image = image.read()
                 images.append(image)
             elif image_name:
                 if filename.endswith(('.jpg', '.png')) \
                         and filename.startswith(image_name):
-                    return os.path.join(root, filename)
+                    return Path(folder, filename)
     return images
 
 

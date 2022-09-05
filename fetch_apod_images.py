@@ -52,7 +52,7 @@ def fetch_apod_images(start_date, end_date, folder='apod_images'):
         else:
             url = apod.get('url')
             filename = f'nasa_apod_{index}.txt'
-            path = os.path.join(folder, filename)
+            path = Path(folder, filename)
             with open(path, 'w') as file:
                 file.write(url)
 

@@ -2,6 +2,8 @@ import argparse
 import os
 import random
 import time
+from pathlib import Path
+
 from more_itertools import chunked
 
 import telegram
@@ -25,7 +27,7 @@ def parse_photos(sent=False, folder='.'):
     for root, dirs, files in os.walk(folder):
         for filename in files:
             if filename.endswith(('.jpg', '.png')):
-                image_path = os.path.join(root, filename)
+                image_path = Path(root, filename)
                 with open(image_path, 'rb') as image:
                     image = image.read()
                 images.append(InputMediaPhoto(media=image))
