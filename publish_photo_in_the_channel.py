@@ -33,7 +33,7 @@ def parse_photos(image_name=None, folder='.'):
     return images
 
 
-def send_photo_to_group(image=None, path=None):
+def send_photo_to_group(chat_id, image=None, path=None):
     if path:
         with open(path, 'rb') as image:
             image = image.read()
@@ -65,9 +65,9 @@ if __name__ == '__main__':
         if args.photo:
             image_path = parse_photos(image_name=args.photo)
             try:
-                send_photo_to_group(path=image_path)
+                send_photo_to_group(chat_id, path=image_path)
             except telegram.error.BadRequest:
                 print('Фото с таким именем не существует')
         else:
             parsed_photo = random.choice(parse_photos())
-            send_photo_to_group(image=parsed_photo)
+            send_photo_to_group(chat_id, image=parsed_photo)

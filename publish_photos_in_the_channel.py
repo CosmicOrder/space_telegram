@@ -38,7 +38,7 @@ def parse_photos(sent=False, folder='.'):
     return images
 
 
-def send_photos_to_group(media):
+def send_photos_to_group(chat_id, media):
     bot.send_media_group(
         chat_id=chat_id,
         media=media,
@@ -65,7 +65,7 @@ if __name__ == '__main__':
                 else:
                     parsed_photos = parse_photos()
                 for some_parsed_photo in parsed_photos:
-                    send_photos_to_group(some_parsed_photo)
+                    send_photos_to_group(chat_id, some_parsed_photo)
                 sent_all = True
                 time.sleep(args.frequency*3600)
             except telegram.error.NetworkError:
