@@ -56,8 +56,8 @@ if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args()
 
-    TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
-    bot = telegram.Bot(token=TG_BOT_TOKEN)
+    tg_bot_token = os.environ['TG_BOT_TOKEN']
+    bot = telegram.Bot(token=tg_bot_token)
 
     chat_id = os.environ['TG_CHAT_ID']
 
