@@ -11,6 +11,7 @@ def fetch_and_save_photos(
         img_url=' .jpg',
         payload=None,
 ):
+    Path(folder).mkdir(exist_ok=True)
     response = requests.get(url, params=payload)
     response.raise_for_status()
 

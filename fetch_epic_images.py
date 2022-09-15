@@ -24,8 +24,6 @@ def fetch_epic_images(quantity, folder='epic_images'):
     epic_endpoint = 'https://api.nasa.gov/EPIC/api/natural'
     epic_picture_url = 'https://api.nasa.gov/EPIC/archive/natural/'
 
-    Path(folder).mkdir(exist_ok=True)
-
     payload = {
         'api_key': api_key,
     }

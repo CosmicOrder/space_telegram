@@ -20,7 +20,6 @@ def create_parser():
 def fetch_spacex_last_launch(launch_id, folder='images'):
     spacex_endpoint = f'https://api.spacexdata.com/v3/launches/{launch_id}'
 
-    Path(folder).mkdir(exist_ok=True)
     spacex_response = requests.get(spacex_endpoint)
     spacex_response.raise_for_status()
 
