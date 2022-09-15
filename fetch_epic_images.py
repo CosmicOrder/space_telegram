@@ -53,11 +53,9 @@ if __name__ == '__main__':
     load_dotenv()
     parser = create_parser()
     args = parser.parse_args()
+
     quantity = args.number_of_photos
 
-    try:
-        api_key = os.environ['NASA_API_KEY']
-    except KeyError:
-        print('Укажите NASA_API_KEY в .env')
+    api_key = os.environ['NASA_API_KEY']
 
     fetch_epic_images(quantity)

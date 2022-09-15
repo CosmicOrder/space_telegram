@@ -65,9 +65,6 @@ if __name__ == '__main__':
     start_date = args.start_date
     end_date = args.end_date
 
-    try:
-        api_key = os.environ['NASA_API_KEY']
-    except KeyError:
-        print('Укажите NASA_API_KEY в .env')
+    api_key = os.environ['NASA_API_KEY']
 
     fetch_apod_images(start_date, end_date)

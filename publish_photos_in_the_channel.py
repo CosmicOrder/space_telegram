@@ -50,13 +50,9 @@ if __name__ == '__main__':
     load_dotenv()
     parser = create_parser()
     args = parser.parse_args()
-    bot = None
 
-    try:
-        TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
-        bot = telegram.Bot(token=TG_BOT_TOKEN)
-    except KeyError:
-        print('Укажите TG_BOT_TOKEN в .env')
+    TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
+    bot = telegram.Bot(token=TG_BOT_TOKEN)
 
     chat_id = os.getenv('TG_CHAT_ID', '@nasa0photos')
 
