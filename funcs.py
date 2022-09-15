@@ -9,7 +9,7 @@ def fetch_and_save_photos(
         index,
         folder,
         img_url=' .jpg',
-        payload='',
+        payload=None,
 ):
     response = requests.get(url, params=payload)
     response.raise_for_status()
