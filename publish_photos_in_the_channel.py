@@ -54,7 +54,7 @@ if __name__ == '__main__':
     TG_BOT_TOKEN = os.environ['TG_BOT_TOKEN']
     bot = telegram.Bot(token=TG_BOT_TOKEN)
 
-    chat_id = os.getenv('TG_CHAT_ID', '@nasa0photos')
+    chat_id = os.environ['TG_CHAT_ID']
 
     sent_all = False
     if bot:

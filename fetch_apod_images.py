@@ -1,7 +1,6 @@
 import argparse
 import os.path
 from pathlib import Path
-from urllib.parse import urlsplit
 
 import requests
 from dotenv import load_dotenv
