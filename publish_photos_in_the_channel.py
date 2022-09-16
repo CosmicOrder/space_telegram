@@ -19,23 +19,37 @@ def create_parser():
         help='frequency publications in hours (default: 4 hours)',
         type=int,
     )
+    parser.add_argument(
+        '--img_per_msg',
+        default=5,
+        help=' count of images send into one message (default: 5 images)',
+        type=int,
+    )
     return parser
 
 
-def parse_photos(sent=False, folder='.'):
-    images = []
-    for root, dirs, files in os.walk(folder):
-        for filename in files:
-            if filename.endswith(('.jpg', '.png')):
-                image_path = Path(root, filename)
-                with open(image_path, 'rb') as image:
-                    image = image.read()
-                images.append(InputMediaPhoto(media=image))
-    if sent:
-        random.shuffle(images)
-    images = list(chunked(images, 10))
+def collect_files(folder='.'):
+    files = []
+    for file_path in Path(folder).rglob('*'):
+        files.append(file_path)
+    return files
 
-    return images
+
+def fetch_images(files, pattern=('.jpg', '.png')):
+    return list(filter(lambda file: file.name.endswith(pattern), files))
+
+
+def create_media_group(images):
+    media_group = []
+    for image_path in images:
+        with open(image_path, 'rb') as image:
+            image = image.read()
+            media_group.append(InputMediaPhoto(media=image))
+    return media_group
+
+
+def shuffle_images(images):
+    return random.shuffle(images)
 
 
 def send_photos_to_group(chat_id, media):
@@ -56,18 +70,22 @@ if __name__ == '__main__':
 
     chat_id = os.environ['TG_CHAT_ID']
 
+    all_files = collect_files()
+    images = fetch_images(all_files)
+    media_group = create_media_group(images)
+
     sent_all = False
-    if bot:
-        while True:
-            try:
-                if sent_all:
-                    parsed_photos = parse_photos(sent_all)
-                else:
-                    parsed_photos = parse_photos()
-                for some_parsed_photo in parsed_photos:
-                    send_photos_to_group(chat_id, some_parsed_photo)
-                sent_all = True
-                time.sleep(args.frequency*3600)
-            except telegram.error.NetworkError:
-                print('Соединение с Интернетом не установлено')
-                time.sleep(5)
+    while True:
+        try:
+            if sent_all:
+                shuffle_images(media_group)
+
+            chunked_media_group = list(chunked(media_group, args.img_per_msg))
+            for chunk in chunked_media_group:
+                send_photos_to_group(chat_id, chunk)
+
+            sent_all = True
+            time.sleep(args.frequency*3600)
+        except telegram.error.NetworkError:
+            print('Соединение с Интернетом не установлено')
+            time.sleep(5)

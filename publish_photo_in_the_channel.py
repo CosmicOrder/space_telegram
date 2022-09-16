@@ -24,14 +24,14 @@ def collect_files(folder='.'):
     return files
 
 
-def filter_files(files, pattern=('.jpg', '.png')):
+def fetch_images(files, pattern=('.jpg', '.png')):
     return list(filter(lambda file: file.name.endswith(pattern), files))
 
 
-def filter_photos(photos, photo_name):
-    for photo in photos:
-        if photo.name.startswith(photo_name):
-            return photo
+def filter_images(images, photo_name):
+    for image in images:
+        if image.name.startswith(photo_name):
+            return image
 
 
 def send_photo_to_group(chat_id, img_path=None):
@@ -55,18 +55,17 @@ if __name__ == '__main__':
 
     chat_id = os.environ['TG_CHAT_ID']
 
-    if bot:
-        all_files = collect_files()
-        photos = filter_files(all_files)
-        if args.photo:
-            required_photo = filter_photos(photos, args.photo)
-            try:
-                send_photo_to_group(
-                    chat_id,
-                    img_path=required_photo.as_posix(),
-                )
-            except telegram.error.BadRequest:
-                print('Фото с таким именем не существует')
-        else:
-            random_photo = random.choice(photos)
-            send_photo_to_group(chat_id, img_path=random_photo.as_posix())
+    all_files = collect_files()
+    images = fetch_images(all_files)
+    if args.photo:
+        required_photo = filter_images(images, args.photo)
+        try:
+            send_photo_to_group(
+                chat_id,
+                img_path=required_photo.as_posix(),
+            )
+        except telegram.error.BadRequest:
+            print('Фото с таким именем не существует')
+    else:
+        random_photo = random.choice(images)
+        send_photo_to_group(chat_id, img_path=random_photo.as_posix())
