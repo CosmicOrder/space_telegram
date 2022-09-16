@@ -11,44 +11,38 @@ def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--photo',
-        default='nasa_apod_1',
+        default=None,
         type=str,
     )
     return parser
 
 
-def parse_photos(image_name=None, folder='.'):
-    images = []
-    for root, dirs, files in os.walk(folder):
-        for filename in files:
-            if filename.endswith(('.jpg', '.png')) and not image_name:
-                image_path = Path(root, filename)
-                with open(image_path, 'rb') as image:
-                    image = image.read()
-                images.append(image)
-            elif image_name:
-                if filename.endswith(('.jpg', '.png')) \
-                        and filename.startswith(image_name):
-                    return Path(folder, filename)
-    return images
+def collect_files(folder='.'):
+    files = []
+    for file_path in Path(folder).rglob('*'):
+        files.append(file_path)
+    return files
 
 
-def send_photo_to_group(chat_id, image=None, path=None):
-    if path:
-        with open(path, 'rb') as image:
-            image = image.read()
+def filter_files(files, pattern=('.jpg', '.png')):
+    return list(filter(lambda file: file.name.endswith(pattern), files))
 
-        bot.send_photo(
-            chat_id=chat_id,
-            photo=image,
-            timeout=100,
-        )
-    else:
-        bot.send_photo(
-            chat_id=chat_id,
-            photo=image,
-            timeout=100,
-        )
+
+def filter_photos(photos, photo_name):
+    for photo in photos:
+        if photo.name.startswith(photo_name):
+            return photo
+
+
+def send_photo_to_group(chat_id, img_path=None):
+    with open(img_path, 'rb') as image:
+        image = image.read()
+
+    bot.send_photo(
+        chat_id=chat_id,
+        photo=image,
+        timeout=100,
+    )
 
 
 if __name__ == '__main__':
@@ -62,12 +56,17 @@ if __name__ == '__main__':
     chat_id = os.environ['TG_CHAT_ID']
 
     if bot:
+        all_files = collect_files()
+        photos = filter_files(all_files)
         if args.photo:
-            image_path = parse_photos(image_name=args.photo)
+            required_photo = filter_photos(photos, args.photo)
             try:
-                send_photo_to_group(chat_id, path=image_path)
+                send_photo_to_group(
+                    chat_id,
+                    img_path=required_photo.as_posix(),
+                )
             except telegram.error.BadRequest:
                 print('Фото с таким именем не существует')
         else:
-            parsed_photo = random.choice(parse_photos())
-            send_photo_to_group(chat_id, image=parsed_photo)
+            random_photo = random.choice(photos)
+            send_photo_to_group(chat_id, img_path=random_photo.as_posix())
