@@ -48,10 +48,6 @@ def create_media_group(images):
     return media_group
 
 
-def shuffle_images(images):
-    return random.shuffle(images)
-
-
 def send_photos_to_group(chat_id, media):
     bot.send_media_group(
         chat_id=chat_id,
@@ -78,7 +74,7 @@ if __name__ == '__main__':
     while True:
         try:
             if sent_all:
-                shuffle_images(media_group)
+                random.shuffle(images)
 
             chunked_media_group = list(chunked(media_group, args.img_per_msg))
             for chunk in chunked_media_group:
