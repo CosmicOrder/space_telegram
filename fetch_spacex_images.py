@@ -30,7 +30,7 @@ def fetch_spacex_last_launch(launch_id, folder='images'):
             api_name='spacex',
             index=index,
             folder=folder,
-            img_url=launch_image_links,
+            img_url=launch_image_link,
         )
 
 
