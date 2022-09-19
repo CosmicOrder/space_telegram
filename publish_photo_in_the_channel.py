@@ -28,7 +28,7 @@ def fetch_images(files, pattern=('.jpg', '.png')):
     return list(filter(lambda file: file.name.endswith(pattern), files))
 
 
-def filter_images(images, photo_name):
+def choose_image(images, photo_name):
     for image in images:
         if image.name.startswith(photo_name):
             return image
@@ -58,14 +58,17 @@ if __name__ == '__main__':
     all_files = collect_files()
     images = fetch_images(all_files)
     if args.photo:
-        required_photo = filter_images(images, args.photo)
-        try:
-            send_photo_to_group(
-                chat_id,
-                img_path=required_photo.as_posix(),
-            )
-        except telegram.error.BadRequest:
-            print('Фото с таким именем не существует')
+        required_photo = choose_image(images, args.photo)
+        if required_photo:
+            try:
+                send_photo_to_group(
+                    chat_id,
+                    img_path=required_photo.as_posix(),
+                )
+            except telegram.error.BadRequest:
+                print('Фото с таким именем слишком много весит')
+        else:
+            print('Картинка с таким именем не существует')
     else:
         random_photo = random.choice(images)
         send_photo_to_group(chat_id, img_path=random_photo.as_posix())
