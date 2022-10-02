@@ -60,13 +60,10 @@ if __name__ == '__main__':
     if args.photo:
         required_photo = choose_image(images, args.photo)
         if required_photo:
-            try:
-                send_photo_to_group(
-                    chat_id,
-                    img_path=required_photo.as_posix(),
-                )
-            except telegram.error.BadRequest:
-                print('Фото с таким именем слишком много весит')
+            send_photo_to_group(
+                chat_id,
+                img_path=required_photo.as_posix(),
+            )
         else:
             print('Картинка с таким именем не существует')
     else:
