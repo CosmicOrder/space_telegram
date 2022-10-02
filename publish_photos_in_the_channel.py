@@ -68,20 +68,16 @@ if __name__ == '__main__':
 
     all_files = collect_files()
     images = fetch_images(all_files)
-    media_group = create_media_group(images)
 
-    sent_all = False
     while True:
+        media_group = create_media_group(images)
         try:
-            if sent_all:
-                random.shuffle(images)
-
             chunked_media_group = list(chunked(media_group, args.img_per_msg))
             for chunk in chunked_media_group:
                 send_photos_to_group(chat_id, chunk)
 
-            sent_all = True
-            time.sleep(args.frequency*3600)
+            random.shuffle(images)
+            time.sleep(args.frequency)
         except telegram.error.NetworkError:
             print('Соединение с Интернетом не установлено')
             time.sleep(5)
