@@ -21,3 +21,11 @@ def fetch_and_save_photos(
     with open(path, 'wb') as file:
         file.write(response.content)
         print(path)
+
+
+def collect_files(folder='.'):
+    return [file_path for file_path in Path(folder).rglob('*')]
+
+
+def fetch_images(files, pattern=('.jpg', '.png')):
+    return list(filter(lambda file: file.name.endswith(pattern), files))

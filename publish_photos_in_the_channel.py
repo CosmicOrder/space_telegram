@@ -2,13 +2,13 @@ import argparse
 import os
 import random
 import time
-from pathlib import Path
-
-from more_itertools import chunked
 
 import telegram
 from dotenv import load_dotenv
+from more_itertools import chunked
 from telegram import InputMediaPhoto
+
+from funcs import collect_files, fetch_images
 
 
 def create_parser():
@@ -26,14 +26,6 @@ def create_parser():
         type=int,
     )
     return parser
-
-
-def collect_files(folder='.'):
-    return [file_path for file_path in Path(folder).rglob('*')]
-
-
-def fetch_images(files, pattern=('.jpg', '.png')):
-    return list(filter(lambda file: file.name.endswith(pattern), files))
 
 
 def create_media_group(images):

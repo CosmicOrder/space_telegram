@@ -1,10 +1,11 @@
 import argparse
 import os
 import random
-from pathlib import Path
 
 import telegram
 from dotenv import load_dotenv
+
+from funcs import collect_files, fetch_images
 
 
 def create_parser():
@@ -15,14 +16,6 @@ def create_parser():
         type=str,
     )
     return parser
-
-
-def collect_files(folder='.'):
-    return [file_path for file_path in Path(folder).rglob('*')]
-
-
-def fetch_images(files, pattern=('.jpg', '.png')):
-    return list(filter(lambda file: file.name.endswith(pattern), files))
 
 
 def choose_image(images, photo_name):
