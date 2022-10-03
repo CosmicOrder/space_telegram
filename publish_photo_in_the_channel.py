@@ -58,14 +58,10 @@ if __name__ == '__main__':
     all_files = collect_files()
     images = fetch_images(all_files)
     if args.photo:
-        required_photo = choose_image(images, args.photo)
-        if required_photo:
-            send_photo_to_group(
-                chat_id,
-                img_path=required_photo.as_posix(),
-            )
-        else:
-            print('Картинка с таким именем не существует')
+        photo = choose_image(images, args.photo)
     else:
-        random_photo = random.choice(images)
-        send_photo_to_group(chat_id, img_path=random_photo.as_posix())
+        photo = random.choice(images)
+    try:
+        send_photo_to_group(chat_id, img_path=photo.as_posix())
+    except AttributeError:
+        print('Фото с таким именем не существует')
