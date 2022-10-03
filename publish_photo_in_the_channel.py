@@ -18,10 +18,7 @@ def create_parser():
 
 
 def collect_files(folder='.'):
-    files = []
-    for file_path in Path(folder).rglob('*'):
-        files.append(file_path)
-    return files
+    return [file_path for file_path in Path(folder).rglob('*')]
 
 
 def fetch_images(files, pattern=('.jpg', '.png')):
