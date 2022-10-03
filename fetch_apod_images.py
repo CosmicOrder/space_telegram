@@ -1,6 +1,5 @@
 import argparse
 import os.path
-from pathlib import Path
 
 import requests
 from dotenv import load_dotenv

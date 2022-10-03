@@ -1,7 +1,6 @@
 import argparse
 
 import requests
-from dotenv import load_dotenv
 
 from funcs import fetch_and_save_photos
 
@@ -35,7 +34,6 @@ def fetch_spacex_last_launch(launch_id, folder='images'):
 
 
 if __name__ == '__main__':
-    load_dotenv()
     parser = create_parser()
     args = parser.parse_args()
 
