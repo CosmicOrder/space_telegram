@@ -46,12 +46,6 @@ def fetch_apod_images(start_date, end_date, folder='apod_images'):
                 folder=folder,
                 img_url=image_url,
             )
-        else:
-            url = apod.get('url')
-            filename = f'nasa_apod_{index}.txt'
-            path = Path(folder, filename)
-            with open(path, 'w') as file:
-                file.write(url)
 
 
 if __name__ == '__main__':
